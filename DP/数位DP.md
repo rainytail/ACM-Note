@@ -50,3 +50,69 @@ int main ()
 }
 ```
 
+
+
+## 一些题目
+
+// 求出第几个满足某种性质的数字
+
+启示录  https://www.acwing.com/problem/content/312/
+
+题意：输出第x个魔鬼数，魔鬼数：含有3个连续6的数字。
+
+[1, x] 中的魔鬼数数量随着x变大而变大，具有单调性，二分答案，使用数位dp求出[1, mid]中的魔鬼数数量。
+
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
+const int N = 20;
+int A[N], cnt;
+ll dp[N][2][2][2][2]; // 限制：不能出现三个连续6
+
+// 注意这里last1和last2不要直接使用数位表示，否则数组太大，memset时间太长
+ll dfs (int pos, bool limit, bool last1, bool last2, bool ok)
+{
+    if (pos == cnt) return ok;
+    ll &ans = dp[pos][limit][last1][last2][ok];
+    if (ans != -1) return ans; else ans = 0;
+    for (int v = 0; v <= (limit ? A[pos] : 9); v ++ ) {
+        ans += dfs(pos + 1, limit && v == A[pos], last2, v == 6, \
+                   ok || (last1 && last2 && v == 6));
+    }
+    return ans;
+}
+
+ll f (ll x)
+{
+    memset(A, 0, sizeof A);
+    memset(dp, -1, sizeof dp);
+    cnt = 0;
+
+    while(x) A[cnt ++ ] = x % 10, x /= 10;
+    reverse(A, A + cnt);
+    ll ans = dfs(0, 1, 0, 0, 0);
+    return ans;
+}
+
+void solve ()
+{
+    ll x; cin >> x;
+    // 二分答案
+    ll l = 0, r = LONG_LONG_MAX / 2;
+    while(l < r) {
+        ll mid = (l + r) >> 1ll;
+        if (f(mid) >= x) r = mid;
+        else l = mid + 1;
+    }
+    printf("%lld\n", r)
+}
+
+int main ()
+{
+    int _; for (scanf("%d", &_); _ -- ; ) solve();
+    return 0;
+}
+```
+
