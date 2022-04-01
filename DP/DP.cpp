@@ -1,8 +1,3 @@
-# 背包问题
-
-## 01背包
-
-```c++
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -89,7 +84,3 @@ vector<int> GetLexicographicSmallestResult (int n, int vals[], int weights[], in
 int main () {
     return 0;
 }
-```
-
-
-
