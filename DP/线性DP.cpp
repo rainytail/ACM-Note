@@ -106,6 +106,41 @@ int waysToLisFast (int n, int a[])
     return cnt.back().back();
 }
 
+// 最长回文子串(LPS)
+// https://codeforces.com/problemset/problem/5/C
+// dp解释：https://codeforces.com/blog/entry/213
+// 状态定义 对于 i 为 ')' 的情况：
+// - d[i] 与第i个位置匹配的'('位置
+// - c[i] 能够匹配成回文串的最左的'('位置
+// 使用栈来模拟
+// 状态转移 c[i] = c[d[i]-1] if d[i]-1 is ')' and c[d[i]-1] != -1
+int getLPS (int n, char s[])
+{
+    int d[N], c[N];
+    vector<int> stk; // 模拟栈
+    for (int i = 1; i <= n; i ++ ) {
+        if (s[i] == '(') stk.push_back(i);
+        else {
+            if (stk.empty()) d[i] = c[i] = -1;
+            else {
+                d[i] = c[i] = stk.back();
+                stk.pop_back();
+                if (s[d[i]-1] == ')' && c[d[i]-1] != -1) c[i] = c[d[i]-1];
+            }
+        }
+    }
+    int Ans = 0, cnt = 1; // Ans为LPS, cnt为方案数
+    for (int i = 1; i <= n; i ++ ) {
+        if (s[i] == '(' || c[i] == -1) continue;
+        if (Ans == i - c[i] + 1) ++ cnt;
+        else if (Ans < i  - c[i] + 1) {
+            Ans = i - c[i] + 1;
+            cnt = 1;
+        }
+    }
+    return Ans;
+}
+
 
 int main()
 {
