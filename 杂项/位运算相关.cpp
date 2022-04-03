@@ -41,6 +41,8 @@ __builtlin_clz(x) x前导0的个数
 __builtlin_parity(x) x二进制下1的奇偶性
 */
 
+// 奇偶校验 https://codeforces.com/problemset/problem/1438/C
+
 int main()
 {
     return 0;
