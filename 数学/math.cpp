@@ -2,6 +2,7 @@
 using namespace std;
 using ll = long long;
 const int N = 100010, mod = 114514;
+const double eps = 1e-8;
 
 // 快速幂 log(n) 取模版本
 int quick_power (int a, int k, int p = mod)
@@ -66,7 +67,7 @@ void getComb_2 ()
     fac[0] = 1;
     for (int i = 1; i < N; i ++ ) fac[i] = 1ll * fac[i-1] * i % mod;
     // 倒推
-    infac[N-1] = inv(fac[N-1], mod-2);
+    infac[N-1] = inv(fac[N-1]);
     for (int i = N-2; i >= 0; i -- ) infac[i] = 1ll * infac[i+1] * (i+1) % mod;
 }
 int C (int n, int m) {
@@ -75,8 +76,8 @@ int C (int n, int m) {
 }
 
 int lucas (int n, int m) {
-    if (a < mod && b < mod) return C(n, m);
-    return 1ll * C(a % mod, b % mod) * lucas(n / mod, m / mod) % mod;
+    if (n < mod && m < mod) return C(n, m);
+    return 1ll * C(n % mod, n % mod) * lucas(n / mod, m / mod) % mod;
 }
 
 // 求数值在 [0, dat - 1] 上的长度为 d 的前 n 个排列
@@ -96,10 +97,60 @@ void getPreviousArgment (int dat, int d, int n)
 
 // 卡特兰数 Cn = C(2n, n) / (n+1) = C(2n, n) - C(2n, n-1)
 // https://oeis.org/A000108
-// 从 n = 0 开始: 	1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, 
-// 208012, 742900, 2674440, 9694845, 35357670, 129644790, 477638700, 1767263190, 6564120420, 
-// 24466267020, 91482563640, 343059613650, 1289904147324, 4861946401452, 18367353072152, 69533550916004, 
+// 从 n = 0 开始: 	1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786,
+// 208012, 742900, 2674440, 9694845, 35357670, 129644790, 477638700, 1767263190, 6564120420,
+// 24466267020, 91482563640, 343059613650, 1289904147324, 4861946401452, 18367353072152, 69533550916004,
 // 263747951750360, 1002242216651368, 3814986502092304
+
+
+// 代数相关
+
+// 高斯定理 求解 n 个线性方程的解
+int gauss (int n, double a[][n])
+{
+    int c, r; // 表示枚举的列和行
+    for (c = 0, r; c < n; c ++ )
+    {
+        int t = r; // 找到当前这一列的绝对值最大的数字
+        // 寻找绝对值最大的数字是为了防止系数过大而导致精度较高
+        for (int i = t; i < n; i ++ )
+            if (fabs(a[i][c]) > fabs(a[t][c]))
+                t = i;
+
+        if (fabs(a[t][c]) < eps) continue;
+
+        // 把第t列换到最上面（第r行，因为r行上面已经固定了）
+        for (int i = c; i < n + 1; i ++ ) swap(a[t][i], a[r][i]);
+
+        // 把这一行c列的数字变成1，方便消除后面行的这一列数字
+        for (int i = n; i >= c; i -- ) a[r][i] /= a[r][c];
+
+        // 把当前列下面的数字全部变成0
+        for (int i = r + 1; i < n; i ++ )
+            if (fabs(a[i][c]) > eps) // 已经是0没必要改变
+                for (int j = n; j >= c; j -- )
+                    a[i][j] -= a[r][j] * a[i][c];
+
+        // 固定好第r行，换下一行
+        ++ r;
+    }
+
+    // 判断解的情况
+    if (r < n) // 没有化简到最后一行，无解或者无限解
+    {
+        // 判断最后一行是否出现 0 = x 这样的式子
+        for (int i = r; i < n; i ++ )
+            if (fabs(a[i][n]) > eps)
+                return 2; // 无穷解
+        return 1; // 否则无解
+    }
+
+    // 由唯一解，从下往上求方程解
+    for (int i = n - 1; i >= 0; i -- )
+        for (int j = i + 1; j < n; j ++ )
+            a[i][n] -= a[j][n] * a[i][j];
+    return 0; // 唯一解
+}
 
 int main () {
     return 0;
