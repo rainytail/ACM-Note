@@ -1,6 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int N = 100010;
+using ll = long long;
+const int N = 100010, mod = 114514;
+
+// 快速幂 log(n) 取模版本
+int quick_power (int a, int k, int p = mod)
+{
+    int res = 1;
+    for (a %= p; k; k >>= 1, a = (ll)a * a % p)
+        if (k & 1) res = (ll)res * a % p;
+    return res;
+}
+
+// 逆元
+// 费马小定理  a^-1 = a^(p-2) p为模数，要求p为质数
+int inv (int x) { return quick_power(x, mod-2); }
+// 拓展欧几里得 可以求出 a 和 p 非互质下 a 的逆元, 返回的 x%p 即为逆元
+int exgcd (int a, int b, int &x, int &y)
+{
+    if (!b) return x = 1, y = 0, a;
+    int r = exgcd(b, a % b, x, y);
+    tie(x, y) = make_tuple(y, x - (a / b) * y);
+    return r;
+}
 
 // 欧拉筛法, O(n)筛素数
 // 使用minp: https://codeforces.com/problemset/problem/1366/D
@@ -23,6 +45,61 @@ void getprimes (int n)
         }
     }
 }
+
+// 组合数相关
+// 求组合数模板
+// 1. C(a, b) = C(a-1, b-1) + C(a-1, b) 从 a 个苹果中选 b 个苹果, 要么选择第 1 个苹果， 要么不选择
+// 2. C(a, b) = a! / (b! * (a-b)!) 存储阶乘
+// 3. Lucas 定理：C(a, b) = C(a % p, b % p) * C(a / p, b / p) mod p
+void getComb_1 ()
+{
+    int c[N][N];
+    for (int i = 0; i < N; i ++ )
+        for (int j = 0; j <= i; j ++ )
+            if (!j) c[i][j] = 1;
+            else c[i][j] = c[i-1][j-1] + c[i-1][j]; // % mod
+}
+
+int fac[N], infac[N];
+void getComb_2 ()
+{
+    fac[0] = 1;
+    for (int i = 1; i < N; i ++ ) fac[i] = 1ll * fac[i-1] * i % mod;
+    // 倒推
+    infac[N-1] = inv(fac[N-1], mod-2);
+    for (int i = N-2; i >= 0; i -- ) infac[i] = 1ll * infac[i+1] * (i+1) % mod;
+}
+int C (int n, int m) {
+    if (n < m) return 0; // 这一句记得加上
+    return 1ll * fac[n] * infac[m] % mod * infac[n-m] % mod;
+}
+
+int lucas (int n, int m) {
+    if (a < mod && b < mod) return C(n, m);
+    return 1ll * C(a % mod, b % mod) * lucas(n / mod, m / mod) % mod;
+}
+
+// 求数值在 [0, dat - 1] 上的长度为 d 的前 n 个排列
+// 适用于数值较小的情况
+// https://codeforces.com/problemset/problem/459/C
+void getPreviousArgment (int dat, int d, int n)
+{
+    int ret[N][N]; // ret(i, j) 第i个排列
+    for (int i = 1; i < n; i ++ ) {
+        for (int j = 0; j < d; j ++ ) ret[i][j] = ret[i-1][j];
+        for (int j = d - 1; j >= 0; j -- ) {
+            (ret[i][j] += 1) %= dat;
+            if (ret[i][j]) break;
+        }
+    }
+}
+
+// 卡特兰数 Cn = C(2n, n) / (n+1) = C(2n, n) - C(2n, n-1)
+// https://oeis.org/A000108
+// 从 n = 0 开始: 	1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, 
+// 208012, 742900, 2674440, 9694845, 35357670, 129644790, 477638700, 1767263190, 6564120420, 
+// 24466267020, 91482563640, 343059613650, 1289904147324, 4861946401452, 18367353072152, 69533550916004, 
+// 263747951750360, 1002242216651368, 3814986502092304
 
 int main () {
     return 0;
