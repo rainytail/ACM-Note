@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 const int N = 10010;
 
 /* 线性dp
@@ -104,6 +105,54 @@ int waysToLisFast (int n, int a[])
         }
     }
     return cnt.back().back();
+}
+
+// 长度为 m 的 LIS 数量
+// 定义状态: dp(i, j) 以 a[i] 结尾, 且长度为 j 的 LIS 数量
+// 转移: dp(i, j) = Σdp(k, j-1)  k < i && a[k] < a[i] (严格上升)
+// 枚举长度j作为第一层, i为第二层, 注意每次只会多出一个i作为策略之一，可以使用树状数组维护
+struct fenwick {
+    ll c[N];
+    void clear (int n) { fill(c + 1, c + n + 1, 0); }
+    void add (int x, int v) {
+        if (x) for (; x < N; x += x & -x) c[x] += v;
+    }
+    int query (int x) {
+        int res = 0;
+        for (; x; x -= x & -x) res += c[x];
+        return res;
+    }
+} F;
+int getMLengthLis (int n, int m, int a[])
+{
+    int dp[N][N];
+    vector<int> alls; // 用来离散化
+    for (int i = 1; i <= n; i ++ ) {
+        alls.push_back(a[i]);
+    }
+
+    sort(alls.begin(), alls.end());
+    alls.erase(unique(alls.begin(), alls.end()), alls.end());
+    for (int i = 1; i <= n; i ++ ) {
+        a[i] = lower_bound(alls.begin(), alls.end(), a[i]) - alls.begin() + 1;
+    }
+
+    for (int i = 1; i <= n; i ++ ) {
+        dp[i][1] = 1;
+    }
+
+    for (int j = 2; j <= m; j ++ ) {
+        F.clear(alls.size()); // 0的位置不清空
+        for (int i = 1; i <= n; i ++ ) {
+            dp[i][j] = F.query(a[i] - 1);
+            F.add(a[i], dp[i][j - 1]);
+        }
+    }
+
+    ll ans = 0;
+    for (int i = 1; i <= n; i ++ ) ans += dp[i][m];
+
+    return ans;
 }
 
 // 最长回文子串(LPS)
