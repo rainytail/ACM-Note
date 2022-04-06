@@ -33,6 +33,7 @@ int prime[N], cnt, minp[N]; // minp记录某个数字最小质因子
 bool st[N];
 void getprimes (int n)
 {
+    st[1] = true; // true 表示非质数
     for (int i = 2; i <= n; i ++ ) {
         if (!st[i]) {
             prime[cnt ++ ] = i;
@@ -47,7 +48,84 @@ void getprimes (int n)
     }
 }
 
+// 区间筛 每个合数都有一个较小的质数 < √x , 先筛出 [1, √] 内的所有质数，再用这些质数筛去 [l, r]
+void getIntervalPrimes (int l, int r)
+{
+    getprimes(50010);
+    memset(st, 0, sizeof st);
+    for (int i = 0; i < cnt; i ++ ) {
+        ll p = prime[i];
+        for (ll j = max(2 * p, (l + p - 1) / p * p); j <= r; j += p)
+            st[j - l] = true;
+    }
+    cnt = 0;
+    for (int i = 0; i <= r - l; i ++ )
+        if (!st[i] && i + l > 1)
+            prime[cnt ++ ] = i + l;
+}
+
+// 欧拉函数 φ(n) 求 [1, n-1] 中与 n 互质的数量
+// φ(n) = n * Π(1-1/pi) = n * Π(pi-1)/p1
+int euler (int n)
+{
+    int ans = n;
+    for (int i = 2; i <= n / i; i ++ ) {
+        int s = 0;
+        while(n % i == 0) ++ s, n /= i;
+        if (s) ans = ans / i * (i - 1);
+    }
+    if (n > 1) ans = ans / n * (n - 1);
+    return ans;
+}
+// 筛法求欧拉函数
+// 欧拉函数是积性函数，可以使用欧拉筛
+// https://www.luogu.com.cn/problem/P2398
+int phi[N];
+void getEulers (int n)
+{
+    phi[1] = 1;
+    for (int i = 2; i <= n; i ++ ) {
+        if (!st[i]) {
+            prime[cnt ++ ] = i;
+            phi[i] = i - 1;
+        }
+        // 筛去最小质因子为prime[j]的数字
+        for (int j = 0; prime[j] <= n / i; j ++ ) {
+            st[prime[j] * i] = true;
+            if (i % prime[j] == 0) {
+                // pj 是 i 的最小质因子，根据定义求出phi
+                phi[i * prime[j]] = phi[i] * prime[j];
+                break;
+            }
+            phi[i * prime[j]] = phi[i] * phi[prime[j]];
+        }
+    }
+}
+
+// 莫比乌斯反演
+// https://oi-wiki.org/math/number-theory/mobius/
+// https://fanfansann.blog.csdn.net/article/details/113765056
+
+// 定义mobius(n)
+// -   1,      n = 1
+// -   0,      n存在平方因子
+// -   (-1)^k, k为本质不同的质因子
+// 莫比乌斯函数的一些性质
+// Σ(d|n) u(d) = [n == 1]
+
+// 莫比乌斯函数为积性函数，可以使用筛法求出
+// 莫反经常与数论分块一起出现
+// 一些题目
+// 模板题  GCD 相关
+// https://www.luogu.com.cn/problem/P3455
+// https://www.luogu.com.cn/problem/P2257
+// 简单容斥 https://www.luogu.com.cn/problem/P2522
+
+
 // 组合数相关
+// 基本排列组合  https://www.cnblogs.com/RioTian/p/13556477.html
+// 隔板法  https://www.cnblogs.com/lfri/p/10439510.html
+
 // 求组合数模板
 // 1. C(a, b) = C(a-1, b-1) + C(a-1, b) 从 a 个苹果中选 b 个苹果, 要么选择第 1 个苹果， 要么不选择
 // 2. C(a, b) = a! / (b! * (a-b)!) 存储阶乘

@@ -27,8 +27,9 @@ https://www.luogu.com.cn/problem/P4462 异或前缀
 */
 
 /*
-bitset用法：bitset一个模板类，相当于若干个位合在一起，存储每一位用一个bit，所以常数为1/32
+bitset 用法：bitset一个模板类，相当于若干个位合在一起，存储每一位用一个 bit ，所以常数为 1/32
 参考  https://en.cppreference.com/w/cpp/utility/bitset
+bitset 可以直接输入，如 cin >> bit
 */
 
 /*
