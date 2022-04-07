@@ -11,6 +11,7 @@ const int N = 10010;
 // 最长上升子序列(LIS)
 // O(n^2) 写法，适用于比较复杂的变形
 // 定义 dp[i] 为以 a[i] 为末尾的 LIS 的长度
+// 转换  https://www.luogu.com.cn/problem/P4310
 int lisSlow(int n, int a[])
 {
     int dp[N];
@@ -189,6 +190,11 @@ int getLPS (int n, char s[])
     }
     return Ans;
 }
+
+// 线性DP与其他算法结合
+// 图论 + DP
+// NOTE 最短路DP一般需要做多次最短路，因此数据范围较小
+// 最短路 + DP  https://www.luogu.com.cn/problem/P1772
 
 
 int main()
