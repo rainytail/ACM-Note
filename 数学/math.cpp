@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
-const int N = 100010, mod = 114514;
+const int N = 100010, mod = 114514, INF = 0x3f3f3f3f;
 const double eps = 1e-8;
 
 // 快速幂 log(n) 取模版本
@@ -107,13 +107,19 @@ void getEulers (int n)
 // 注意这个 phi(m) 不一定是余数为 1 的最小数字 应该是 phi(m) 的因数
 // 例题  https://www.luogu.com.cn/problem/P4861
 
+// 拓展欧拉定理
+// - a 与 m 互质    a^b = a^(b % phi(m)) (mod m)
+// - a 与 m 不互质  当 b > phi(m) 时: a^b = a^(b % phi(m) + phi(m)) (mod m)
+// 例题  https://www.luogu.com.cn/problem/P4139
+
+
 // BSGS 算法
 // BSGS 用于求满足 a^x = b (mod m) 的 x 值 (要求 a 与 m 互质)
 // 复杂度O(√m) 使用map会增加一个log
 // https://oi-wiki.org/math/number-theory/bsgs/
-// https://zhuanlan.zhihu.com/p/132603308
-// TODO 拓展BSGS
+// (推荐) https://zhuanlan.zhihu.com/p/132603308
 // 一些题目
+// 模板题  https://www.luogu.com.cn/problem/P3846
 // 转换  C题 https://codeforces.com/gym/103486
 ll BSGS (ll a, ll b, ll m)
 {
@@ -133,6 +139,46 @@ ll BSGS (ll a, ll b, ll m)
     }
     return -1; // 没有结果
 }
+
+// 拓展BSGS算法
+// 求当 a 和 m 不是互质的情况
+// (推荐) https://zhuanlan.zhihu.com/p/132603308
+// NOTE 注意基础BSGS函数需要略微修改一些
+// 模板题  https://www.luogu.com.cn/problem/P4195
+ll BSGS (ll a, ll b, ll m, ll k = 1)
+{
+    static unordered_map<ll, ll> hs;
+    hs.clear();
+    ll t = sqrt(m) + 1, cur = 1;
+    for (int B = 1; B <= t; B ++ ) {
+        (cur *= a) %= m;
+        hs[cur * b % m] = B;
+    }
+    ll now = cur * k % m; // 多乘上前面的系数
+    for (int A = 1; A <= t; A ++ ) {
+        if (hs.contains(now)) {
+            return A * t - hs[now];
+        }
+        (now *= cur) %= m;
+    }
+    return -INF; // 因为最后会加上值，这里取负无穷
+}
+ll exBSGS (ll a, ll b, ll m, ll k = 1)
+{
+    ll A = a %= m, B = b %= m, M = m;
+    if (b == 1) return 0;
+    ll cur = 1 % m;
+    for (int i = 0; ; i ++ ) {
+        if (cur == B) return i; // 拓展BSGS算出的是可行解, 真正答案可能在 [0, i] 之间
+        (cur *= A) %= M;
+        ll d = gcd(a, m);
+        if (b % d) return -INF;
+        // 如果a和p已经互质了，可以使用基础BSGS
+        if (d == 1) return BSGS(a, b, m, k) + i;
+        k = k * a / d % m, b /= d, m /= d; // 递归求 BSGS(a, b/d, m/d, k)
+    }
+}
+
 
 // 莫比乌斯反演
 // https://oi-wiki.org/math/number-theory/mobius/
