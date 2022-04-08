@@ -29,6 +29,7 @@ int exgcd (int a, int b, int &x, int &y)
 // 使用minp: https://codeforces.com/problemset/problem/1366/D
 // 性质: x = p1^a1 + p2^a2 + ...
 // gcd(p1*p2*...*px + p_x+1*...*pk, x) = 1
+// 转换  https://www.luogu.com.cn/problem/P1445
 int prime[N], cnt, minp[N]; // minp记录某个数字最小质因子
 bool st[N];
 void getprimes (int n)
@@ -101,6 +102,10 @@ void getEulers (int n)
         }
     }
 }
+// 欧拉函数相关
+// 欧拉定理  x^phi(m) = 1 (mod m)
+// 注意这个 phi(m) 不一定是余数为 1 的最小数字 应该是 phi(m) 的因数
+// 例题  https://www.luogu.com.cn/problem/P4861
 
 // 莫比乌斯反演
 // https://oi-wiki.org/math/number-theory/mobius/
@@ -182,6 +187,48 @@ void getPreviousArgment (int dat, int d, int n)
 
 
 // 代数相关
+
+// 线性基
+// https://oi-wiki.org/math/basis/
+// https://ouuan.github.io/post/%E7%BA%BF%E6%80%A7%E5%9F%BA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/
+// https://oi.men.ci/linear-basis-notes/
+
+// 线性基就是向量空间的一组基，通常用来解决异或相关的题目
+// 用一组集合来构造另外一个集合(基)，这个集合满足:
+// - 线性基的元素能相互异或得到原集合的所有元素互相异或得到的值
+// - 线性基是满足性质1的最小集合
+// - 线性基没有异或为0的子集，即线性无关
+// - 线性基不同的异或组合，得到的数字都是不同的
+// - 线性基中每个元素的二进制最高位都不相同(有点像阶梯型矩阵)
+
+// 线性基(基内元素用ai表示)构造：
+// 对原集合的每个数字x，从高位向低位扫描，如果当前位为1：
+// - 如果ai不存在，令ai = p，结束扫描
+// - 否则，令x = x xor ai
+void insert (int x)
+{
+    int p[N]; // p 为线性基
+    for (int i = 30; i >= 0; i -- ) {
+        if (!(x >> i)) continue;
+        if (!p[i]) {
+            p[i] = x;
+            break;
+        }
+        x ^= p[i];
+    }
+}
+// 线性基求 xor 组合的最大值
+// 把线性基理解为阶梯型矩阵，从高位向低位扫描，因为当前位置a_i的i位是1，所以如果能使得答案变大，就选择ai
+// 模板题  https://www.luogu.com.cn/problem/P3812
+
+// 线性基求 xor 组合最小值
+// 答案就是线性基里元素的最小值
+
+// 求某个区间是否有异或为0的子集
+// 依次将元素插入到线性基，如果某个元素没有被插入，那么就是存在异或组合为这个元素的值，再与这个元素异或得到0
+// NOTE 根据矩阵的解结构，如果元素只有 k 位，那么元素数量超过 k ，就一定有子集异或为 0
+// 例题  https://codeforces.com/gym/103486/problem/I
+
 
 // 高斯定理 求解 n 个线性方程的解
 int gauss (int n, double a[][n])
