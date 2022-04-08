@@ -107,6 +107,33 @@ void getEulers (int n)
 // 注意这个 phi(m) 不一定是余数为 1 的最小数字 应该是 phi(m) 的因数
 // 例题  https://www.luogu.com.cn/problem/P4861
 
+// BSGS 算法
+// BSGS 用于求满足 a^n = b (mod m) 的 x 值
+// 复杂度O(√m) 使用map会增加一个log
+// https://oi-wiki.org/math/number-theory/bsgs/
+// https://zhuanlan.zhihu.com/p/132603308
+// TODO 拓展BSGS
+// 一些题目
+// 转换  C题 https://codeforces.com/gym/103486
+ll BSGS (ll a, ll b, ll m)
+{
+    static unordered_map<ll, ll> hs;
+    hs.clear();
+    ll t = sqrt(m) + 1, cur = 1;
+    for (int B = 1; B <= t; B ++ ) {
+        (cur *= a) %= m;
+        hs[cur * b % m] = B;
+    }
+    ll now = cur; // cur is a^t
+    for (int A = 1; A <= t; A ++ ) {
+        if (hs.contains(now)) { // contains C++20语法, 可换成 find
+            return A * t - hs[now];
+        }
+        (now *= cur) %= m;
+    }
+    return -1; // 没有结果
+}
+
 // 莫比乌斯反演
 // https://oi-wiki.org/math/number-theory/mobius/
 // https://fanfansann.blog.csdn.net/article/details/113765056
