@@ -108,7 +108,7 @@ void getEulers (int n)
 // 例题  https://www.luogu.com.cn/problem/P4861
 
 // BSGS 算法
-// BSGS 用于求满足 a^n = b (mod m) 的 x 值
+// BSGS 用于求满足 a^x = b (mod m) 的 x 值 (要求 a 与 m 互质)
 // 复杂度O(√m) 使用map会增加一个log
 // https://oi-wiki.org/math/number-theory/bsgs/
 // https://zhuanlan.zhihu.com/p/132603308
