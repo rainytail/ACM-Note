@@ -6,6 +6,9 @@ const int N = 10010;
 /* 线性dp
 ① 前缀和后缀的转移，例如从 dp[i-1] 转移到 dp[i]，或者从 dp[j] 转移到 dp[i] (j < i), dp[i]可以表示为一个状态或者一组状态等
 ② 双序列问题，一般定义 dp[i][j] 表示对子问题 (s1[:i], s2[:j]) 的最优解结果，例如LCS
+
+一些题目
+好题 二进制枚举状态 https://codeforces.com/problemset/problem/1391/D
 */
 
 // 最长上升子序列(LIS)
@@ -164,6 +167,7 @@ int getMLengthLis (int n, int m, int a[])
 // - c[i] 能够匹配成回文串的最左的'('位置
 // 使用栈来模拟
 // 状态转移 c[i] = c[d[i]-1] if d[i]-1 is ')' and c[d[i]-1] != -1
+// 转换 求所有合法括号序列数量  http://oj.daimayuan.top/course/10/problem/707
 int getLPS (int n, char s[])
 {
     int d[N], c[N];
