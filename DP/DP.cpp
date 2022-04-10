@@ -3,8 +3,16 @@ using namespace std;
 using ll = long long;
 const int N = 1010, M = 1010, INF = 0x3f3f3f3f;
 
+/* 状态空间
+一个实际问题的各种可能情况构成的集合
+由小及大：当状态空间位于边界上或某个小范围内等特殊情形，该状态空间的解往往是已知的。
+若能将此解的应用场景扩大到原问题的状态空间，并且扩展过程的每个步骤具有相似性，就可以考虑使用递推或递归求解。
+换句话说，程序在每个步骤上应该面对相同种类的问题，这些问题都是原问题的一个「子问题」，可能仅在规模或者某些限制条件上有所区别，并且能够使用「求解原问题的程序」进行求解。
+*/
+
 /* dp
 NOTE 遇到求最值问题, 是否能将搜索性问题转化为判定性问题?
+NOTE 状态不好确定时, 尝试转化问题模型、逆序思考、增加维度等
 */
 
 /* 线性dp
@@ -14,6 +22,7 @@ NOTE 遇到求最值问题, 是否能将搜索性问题转化为判定性问题?
 一些题目
 二进制枚举状态 https://codeforces.com/problemset/problem/1391/D
 数组划分(好题) 将搜索性问题转化为判定性问题  http://oj.daimayuan.top/problem/665  证明: https://zhuanlan.zhihu.com/p/489360066
+智乃买瓜 消去影响 https://ac.nowcoder.com/acm/contest/view-submission?submissionId=50913018
 */
 
 // 最长上升子序列(LIS)
@@ -278,10 +287,12 @@ int maxTwoCircleSubarraySum (int n, int a[], int gap = 1)
 /* 区间dp
 区间DP一般是转移是合并区间或者分解区间。
 总结套路：https://www.luogu.com.cn/blog/BreakPlus/ou-jian-dp-zong-jie-ti-xie
+
 ① 将序列分为 K 个连续区间，求解这些区间的某个最优性质。
 一般定义 dp[i][k] 表示将 a[:i] 分为 K 个连续区间得到的最优解
 枚举最后一个区间的左端点 j，即最后区间为 [j, i] ，从 dp[j-1][k-1] 转移到 dp[i][k] ，转移时考虑 a[j:i] 对最优解的影响。
 体育节  http://oj.daimayuan.top/course/10/problem/668  证明: https://zhuanlan.zhihu.com/p/490707329
+
 ② 求解关于某个序列的最优性质，要求大区间的最优解可以依赖于小区间的最优解。
 一般定义 dp[i][j] 表示 a[i:j] 的最优解
 此时可以枚举区间大小 [l, r] ，从小区间转移到大区间
