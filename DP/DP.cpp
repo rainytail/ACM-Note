@@ -354,6 +354,34 @@ ll getKthNumber (int k)
     return r;
 }
 
+// 对数字的数位映射到某个函数，求区间函数和
+// 定义数字x价值为数字段数值乘上区间长度平方, 求[l, r]所有数字的价值和
+// https://www.luogu.com.cn/problem/P3754
+// dp(i, 0/1, j, k) 表示前 i 个数字固定, 且当前无/有限制, 这个状态下最后数字为 j , 且连续长度为 k 时的数字数量
+// sum(i, 0/1, j, k) 为这个状态的价值和
+// 1. v == j  dp += dfs.dp sum += dfs.sum
+// 2. v != j  dp += dfs.dp sum += dfs.sum + dfs.dp * j * k * k
+const int SIZE = 17;
+int A[SIZE], cnt;
+ll dp[SIZE][2][SIZE][SIZE], sum[SIZE][2][SIZE][SIZE];
+pair<int, int> dfs (int pos, bool limit, int last, int k)
+{
+    if (pos == cnt) return { 1, last * k * k };
+    ll &ans1 = dp[pos][limit][last][k];
+    ll &ans2 = sum[pos][limit][last][k];
+    if (ans1 != -1) return { ans1, ans2 }; else ans1 = ans2 = 0;
+    for (int v = 0; v <= (limit ? A[pos] : 9); v ++ )
+        if (v == last) {
+            auto [c1, c2] = dfs(pos+1, limit && v == A[pos], v, k+1);
+            ans1 += c1;
+            ans2 += c2;
+        } else {
+            auto [c1, c2] = dfs(pos+1, limit && v == A[pos], v, 1);
+            ans1 += c1;
+            ans2 += c2 + c1 * k * k * last;
+        }
+    return { ans1, ans2 };
+}
 
 /* 背包问题
 从物品的选择次序的无后效性着手
