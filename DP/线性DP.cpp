@@ -193,7 +193,9 @@ int getLPS (int n, char s[])
 
 // 最大子段和相关
 // https://www.luogu.com.cn/problem/solution/P1121
-// 最大子段和 以 i 结尾, 则 ans = sum[i] - min(sum[j]) j < i
+// 1. 最大子段和 以 i 结尾, 则 ans = sum[i] - min(sum[j]) j < i
+// 2. 令 f(i) 为以 i 结尾的最大子段和, 则 f(i) = max(f(i-1) + a[i], 0)
+// 转换  https://codeforces.com/problemset/problem/1370/E
 int maxSubarraySum (int n, int a[])
 {
     int ans = 0, last = 0; // last维护前缀最小 非空: ans = -2e9
@@ -210,8 +212,25 @@ int maxSubarraySum (int n, int a[])
 // 子段长度不小于 m
 // 维护 min(sum[k]), 1 <= k <= i-m 即可
 
-// 最大两段子段和
+// 最大两段子段和(两段至少相距 gap) 要求每一段都是非空
 // 令 f(i) 为以 a[i] 结尾的最大子段和, g(i) 以 a[i] 开头的最大子段和(倒着求一遍)
+int maxTwoSubarraySum (int n, int a[], int gap = 1)
+{
+    int f[N], g[N];
+    for (int i = 1; i <= n; i ++ ) {
+        f[i] = max(f[i-1], 0) + a[i];
+    }
+    for (int i = n; i >= 1; i -- ) {
+        g[i] = max(g[i+1], 0) + a[i];
+    }
+    for (int i = 2; i <= n; i ++ ) f[i] = max(f[i-1], f[i]);
+    for (int i = n-1; i >= 1; i -- ) g[i] = max(g[i+1], g[i]);
+    int ans = -2e9; // 可以为空: ans = 0
+    for (int i = 1; i + gap + 1 <= n; i ++ ) {
+        ans = max(ans, f[i] + g[i + gap + 1]);
+    }
+    return ans;
+}
 
 // 最大 m 段子段和
 // 令 f(i, j, 0/1) 为前 i 个元素, 开了 j 段, 第 i 个元素选或不选时的最大 j 段和
@@ -225,6 +244,20 @@ int maxSubarraySum (int n, int a[])
 // 环状最大两段子段和
 // 对于所有答案可能的情况, 一种是一段跨过了端点, 另一种是没有跨过端点
 // 那么求一遍两段最大子段和, 再求一遍最小两段子段和, 用总和减去就是跨过端点的两段最大子段和
+// NOTE 注意判断全为负数的情况
+// 模板题  https://www.luogu.com.cn/problem/P1121
+int maxTwoCircleSubarraySum (int n, int a[], int gap = 1)
+{
+    int ans = maxTwoSubarraySum(n, a, gap);
+    // 特判全为负数的情况, 这个时候如果取反，会导致取完, 也就是 ans = tot, 这样取环形就会导致一个不取
+    if (none_of(a + 1, a + n + 1, [&](int x){ return x >= 0; })) {
+        return ans;
+    }
+    int tot = accumulate(a + 1, a + n + 1, 0);
+    for (int i = 1; i <= n; i ++ ) a[i] = -a[i];
+    ans = max(ans, tot + maxTwoSubarraySum(n, a, gap));
+    return ans;
+}
 
 
 // 线性DP与其他算法结合
