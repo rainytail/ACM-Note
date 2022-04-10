@@ -107,6 +107,12 @@ void getEulers (int n)
 // 注意这个 phi(m) 不一定是余数为 1 的最小数字 应该是 phi(m) 的因数
 // 例题  https://www.luogu.com.cn/problem/P4861
 
+/* 欧拉函数性质
+1. n > 2 时, phi(n) 是偶数
+2. n > 1, [1, n] 中与 n 互质的数的和为 (n * phi(n) + [n == 1]) / 2
+3. Σd|n phi(d) = n
+*/
+
 // 拓展欧拉定理
 // - a 与 m 互质    a^b = a^(b % phi(m)) (mod m)
 // - a 与 m 不互质  当 b > phi(m) 时: a^b = a^(b % phi(m) + phi(m)) (mod m)
