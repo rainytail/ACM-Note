@@ -13,12 +13,51 @@ a+b = (a|b) + (a&b)
 
 运算符优先级  https://www.sojson.com/operation/cxx.html
 
+// is a power of 2
+bool isPowerOfTwo (int n) {
+    return n > 0 && (n & (n-1) == 0);
+}
+
 位运算 子集枚举
 二进制枚举  [0, (1>>n) - 1]
 
-S ∪ {i}: S|1<<i
-S ∩ T: S&T
-S \ {i}: S&^(1<<i)
+位运算与集合相关
+int A, B; // set
+int c; // element
+A |= 1<<c;       // insert c
+A &= ~(1<<c);    // erase c
+A ^= 1<<c;       // flip c
+a & -a;          // lowbit of c
+A = 0;           // empty set
+A | B;           // union
+A & B;           // intersection
+int siz = 15;    // size of set
+int ALL = (1<<siz)-1 // universal set
+ALL ^ A          // complementary set of A
+(A & B) == B;    // B is A's subset
+
+// enumerate the subset of ALL
+for (int i = 0; i <= ALL; i ++ )
+
+// enumerate the subset of A
+int subset = A;
+do {
+    // do something
+    subset = (subset - 1) & A;
+} while(subset);
+
+// count the number of element in A
+int cnt = 0;
+for (int i = 0; i < si; i ++ )
+    if (A >> i & 1) ++ cnt;
+cnt;
+// or
+for (int i = A; i; i >>= 1)
+    cnt += i & 1;
+
+O(n) 求每个状态的 1 的数量
+for (int i = 1; i <= ALL; i ++ )
+    cnt[i] = cnt[i>>1] + (i & 1);
 
 检测是否状态内只存在一个0: S&(S-1) == 0
 

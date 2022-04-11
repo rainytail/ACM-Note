@@ -11,6 +11,10 @@ const int N = 1010, M = 1010, INF = 0x3f3f3f3f;
 */
 
 /* dp
+
+视频讲解：
+https://www.bilibili.com/video/av93356551  状压dp
+
 NOTE 遇到求最值问题, 是否能将搜索性问题转化为判定性问题?
 NOTE 状态不好确定时, 尝试转化问题模型、逆序思考、增加维度等
 */
@@ -542,6 +546,15 @@ void dfs (int u)
                 dp[u][j] = max(dp[u][j], dp[u][j - k] + dp[s][k]);
     }
 }
+
+// 状压dp
+// 题单  https://www.luogu.com.cn/training/215#problems
+// 浅谈状压dp  https://www.luogu.com.cn/blog/yijan/zhuang-ya-dp
+// 算法竞赛专题解析  https://blog.csdn.net/weixin_43914593/article/details/106432695
+// todo 题单  https://ac.nowcoder.com/acm/problem/collection/808
+//      题单  https://ac.nowcoder.com/acm/problem/collection/810
+// 
+
 
 int main()
 {

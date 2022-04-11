@@ -186,6 +186,31 @@ ll exBSGS (ll a, ll b, ll m, ll k = 1)
 }
 
 
+// 数论分块/整除分块
+// Σ(1..n) n/i
+ll floorLoop1D (int n)
+{
+    ll ans = 0;
+    for (int l = 1, r; l <= n; l = r + 1) {
+        r = n / (n / l);
+        ans += (n / l) * (r - l + 1);
+    }
+    return ans;
+}
+
+// 二维分块
+// Σ(1..n, 1..m) n/i * m/i
+ll floorLoop2D (int n, int m)
+{
+    ll ans = 0;
+    for (int l = 1, r; l <= n; l = r + 1) {
+        r = min(n / (n / l), m / (m / l));
+        ans += (n / l) * (m / l) * (r - l + 1);
+    }
+    return ans;
+}
+
+
 // 莫比乌斯反演
 // https://oi-wiki.org/math/number-theory/mobius/
 // https://fanfansann.blog.csdn.net/article/details/113765056
@@ -263,6 +288,28 @@ void getPreviousArgment (int dat, int d, int n)
 // 208012, 742900, 2674440, 9694845, 35357670, 129644790, 477638700, 1767263190, 6564120420,
 // 24466267020, 91482563640, 343059613650, 1289904147324, 4861946401452, 18367353072152, 69533550916004,
 // 263747951750360, 1002242216651368, 3814986502092304
+
+// 容斥原理
+// https://oi-wiki.org/math/combinatorics/inclusion-exclusion-principle/
+// 一些题目
+// dfs容斥
+// 幸运数字 https://www.luogu.com.cn/problem/P2567
+ll InclusionExclusion (int n, int a[])
+{
+    ll ans = 0;
+    for (int s = 0; s < (1 << n); s ++ ) {
+        ll res = 0, sign = 0;
+        for (int i = 0; i < n; i ++ ) {
+            if (s >> i & 1) {
+                // .....
+                sign += 1;
+            }
+        }
+        res *= sign & 1 ? 1 : -1;
+        ans += res;
+    }
+    return ans;
+}
 
 
 // 代数相关
