@@ -14,6 +14,7 @@ int quick_power (int a, int k, int p = mod)
 }
 
 // 逆元
+// 无逆元下求除法: 转化为若干个乘法  https://www.luogu.com.cn/problem/P4588
 // 费马小定理  a^-1 = a^(p-2) p为模数，要求p为质数
 int inv (int x) { return quick_power(x, mod-2); }
 // 拓展欧几里得 可以求出 a 和 p 非互质下 a 的逆元, 返回的 x%p 即为逆元

@@ -29,7 +29,11 @@ NOTE 状态不好确定时, 尝试转化问题模型、逆序思考、增加维�
 智乃买瓜 消去影响 https://ac.nowcoder.com/acm/contest/view-submission?submissionId=50913018
 */
 
+
 // 最长上升子序列(LIS)
+// 把一个序列 A 变为非严格单调递增: 修改次数最小为 n - LIS (非降)
+// 把一个序列 A 变为 严格单调递增: 修改次数最小为 n - LIS (非降) 其中LIS 指 B[i] = A[i] - 1 的LIS
+
 // O(n^2) 写法，适用于比较复杂的变形
 // 定义 dp[i] 为以 a[i] 为末尾的 LIS 的长度
 // 转换  https://www.luogu.com.cn/problem/P4310
@@ -46,7 +50,6 @@ int lisSlow(int n, int a[])
     return *max_element(dp + 1, dp + n + 1);
 }
 
-// 最长上升子序列(LIS)
 // O(nlogn) 写法，定义 dp[i] 为长度为 i 的 LIS 的末尾元素的最小值
 // 显然对于每个位置尽量让他更小，使后面的元素有更多选择
 // 求每个前缀的LIS: 注意我们遍历到 i 时，其实就是只考虑了前 i 个元素构成的 LIS ，所以直接开个数组记录
