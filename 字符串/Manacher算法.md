@@ -1,9 +1,3 @@
----
-mathjax: true
-title: Manacher算法
-tags: 字符串
----
-
 ## Manacher算法
 
 Manacher是一种**处理字符串最长回文子串**的算法，由Manacher于1975年发明。

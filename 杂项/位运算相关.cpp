@@ -62,7 +62,9 @@ for (int i = 1; i <= ALL; i ++ )
 检测是否状态内只存在一个0: S&(S-1) == 0
 
 异或和相关
-https://www.luogu.com.cn/problem/P4462 异或前缀
+//NOTE 根据异或和的性质, 对序列作前缀, 可以将区间异或和变成两点的异或和
+构造前缀和来得到原序列 https://codeforces.com/problemset/problem/1174/D
+异或前缀 https://www.luogu.com.cn/problem/P4462
 */
 
 /*

@@ -32,7 +32,7 @@ NOTE 状态不好确定时, 尝试转化问题模型、逆序思考、增加维�
 
 // 最长上升子序列(LIS)
 // 把一个序列 A 变为非严格单调递增: 修改次数最小为 n - LIS (非降)
-// 把一个序列 A 变为 严格单调递增: 修改次数最小为 n - LIS (非降) 其中LIS 指 B[i] = A[i] - 1 的LIS
+// 把一个序列 A 变为 严格单调递增: 修改次数最小为 n - LIS (非降) 其中LIS 指 B[i] = A[i] - i 的LIS
 
 // O(n^2) 写法，适用于比较复杂的变形
 // 定义 dp[i] 为以 a[i] 为末尾的 LIS 的长度
@@ -534,6 +534,7 @@ int boundedKnapsackBinary (int n, int vals[], int weights[], int numbers[], int 
 // 树上背包/依赖背包
 // 模板题  https://www.acwing.com/problem/content/description/10/
 // 多棵树的情况 金明的预算方案  https://www.acwing.com/problem/content/489/
+// 树上背包+01分数规划  https://www.luogu.com.cn/problem/P4322
 int n, root, v[N], w[N], V;
 int dp[N][M]; // 用j容量的背包，选择以i为根的子树，且i被选择
 vector<int> g[N];
@@ -547,6 +548,25 @@ void dfs (int u)
         for (int j = V; j >= v[u]; j -- ) // 给以u为根的这棵树分配多少容量
             for (int k = j - v[u]; k >= 0; k -- ) // 给s儿子分配多少容量
                 dp[u][j] = max(dp[u][j], dp[u][j - k] + dp[s][k]);
+    }
+}
+
+// 树形dp
+// 一般以子树的根节点和根节点对应状态作为dp维度
+
+// 树上长度为 k 的路径数量
+// 设 dp[i][j] 表示以 i 为根, 长度为 j 的路径
+// 注意根节点可能连接两头，即不是作为路径端点, 所以我们可以开一个全局变量 ans 来维护答案
+// dp 数组只需要维护根节点为路径端点的情况
+// https://codeforces.com/problemset/problem/161/D
+void getWaysOfKLengthRoadInTree (int u, int p)
+{
+    dp[u][0] = 1;
+    for (int v: g[u]) {
+        if (v == p) continue;
+        dfs(v, u);
+        for (int i = 0; i < k; i ++ ) ans += dp[v][i] * dp[u][k-1-i];
+        for (int i = 1; i <= k; i ++ ) dp[u][i] += dp[v][i-1];
     }
 }
 
