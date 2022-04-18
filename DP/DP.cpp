@@ -415,6 +415,7 @@ int zeroOneKnapsack (int n, int vals[], int weights[], int W)
 }
 
 // EXTRA: n个物品，装入体积至少为W，求价值和的最小值
+// NOTE 装入体积大于W, 就看做W来处理即可, 因为所有大于的和等于的都是同一种状态
 // 01分数规划 + 01背包  https://www.luogu.com.cn/problem/P4377
 // 转化  https://www.luogu.com.cn/problem/P1156
 int zeroOneLeastKnapsack (int n, int vals[], int weights[], int W)
