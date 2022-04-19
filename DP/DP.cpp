@@ -579,6 +579,21 @@ void getWaysOfKLengthRoadInTree (int u, int p)
 //      题单  https://ac.nowcoder.com/acm/problem/collection/810
 // 
 
+/* 概率dp/期望dp
+   https://oi-wiki.org/dp/probability/
+   https://en.wikipedia.org/wiki/Probability
+
+*/
+
+// 概率
+// 求概率，要考虑在当前状态下的各个可能的选择
+// 抓老鼠  https://codeforces.com/problemset/problem/148/D
+
+// 期望
+// 重复操作型，会产生无限递归型公式，化简可以形成dp公式
+// 收集邮票  https://www.luogu.com.cn/problem/P4550
+// 2022昆明B(状压+期望dp):  https://ac.nowcoder.com/acm/contest/32708/B
+
 
 int main()
 {

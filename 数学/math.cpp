@@ -4,6 +4,11 @@ using ll = long long;
 const int N = 100010, mod = 114514, INF = 0x3f3f3f3f;
 const double eps = 1e-8;
 
+/* 数学相关
+   
+   交换求和技巧  https://zhuanlan.zhihu.com/p/499839696
+*/
+
 // 快速幂 log(n) 取模版本
 int quick_power (int a, int k, int p = mod)
 {
@@ -109,6 +114,7 @@ void getEulers (int n)
 // 例题  https://www.luogu.com.cn/problem/P4861
 
 /* 欧拉函数性质
+https://zhuanlan.zhihu.com/p/77880887
 1. n > 2 时, phi(n) 是偶数
 2. n > 1, [1, n] 中与 n 互质的数的和为 (n * phi(n) + [n == 1]) / 2
 3. Σd|n phi(d) = n
