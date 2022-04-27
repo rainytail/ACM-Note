@@ -298,6 +298,8 @@ void getPreviousArgment (int dat, int d, int n)
 
 // 容斥原理
 // https://oi-wiki.org/math/combinatorics/inclusion-exclusion-principle/
+// 如果题目有较多限制，可以先不考虑这些限制得到解，再容斥减去不符合限制的解
+// Devu和鲜花  https://www.acwing.com/problem/content/description/216/
 // 一些题目
 // dfs容斥
 // 幸运数字 https://www.luogu.com.cn/problem/P2567

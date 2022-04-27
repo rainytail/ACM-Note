@@ -1,5 +1,9 @@
 # 树的启发式合并 (DSU On Tree)
 
+// https://oi-wiki.org/graph/dsu-on-tree/
+
+// https://codeforces.com/blog/entry/44351
+
 其实就是借用了 DSU 的按秩合并的思想，本身是优化暴力。
 
 一些题目：

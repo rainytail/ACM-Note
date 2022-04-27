@@ -478,6 +478,7 @@ vector<int> GetLexicographicSmallestResult (int n, int vals[], int weights[], in
 // NOTE: 判断能否达到 sum ,使用bitset或者开bool型dp
 // 转换: https://ac.nowcoder.com/acm/contest/23106/A
 // 转换: https://codeforces.com/contest/1637/problem/D
+// 能够组合的不同价值的方案数  https://www.luogu.com.cn/problem/P1441
 int zeroOneWaysToSum (int n, int vals[], int S)
 {
     int dp[N];
@@ -494,7 +495,7 @@ int zeroOneWaysToSum (int n, int vals[], int S)
     f[0] = 1;
     for (int i = 1; i <= n; i ++ )
         f |= f << vals[i];
-    return f[S];
+    return f[S]; // f.count() 能够组成不同价值的方案数(包括 0)
 }
 
 // 多重背包
