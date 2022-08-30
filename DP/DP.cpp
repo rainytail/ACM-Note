@@ -23,10 +23,15 @@ NOTE 状态不好确定时, 尝试转化问题模型、逆序思考、增加维�
 ① 前缀和后缀的转移，例如从 dp[i-1] 转移到 dp[i]，或者从 dp[j] 转移到 dp[i] (j < i), dp[i]可以表示为一个状态或者一组状态等
 ② 双序列问题，一般定义 dp[i][j] 表示对子问题 (s1[:i], s2[:j]) 的最优解结果，例如LCS
 
+NOTE 前缀和后缀的转移，往往需要考虑 "最后一步的影响"，常常表示为：保留最后一个数字等。
+题目：CF #804D https://codeforces.com/contest/1699/problem/D
+    BAJ-Bytecomputer https://www.luogu.com.cn/problem/P3558
+
 一些题目
 二进制枚举状态 https://codeforces.com/problemset/problem/1391/D
 数组划分(好题) 将搜索性问题转化为判定性问题  http://oj.daimayuan.top/problem/665  证明: https://zhuanlan.zhihu.com/p/489360066
 智乃买瓜 消去影响 https://ac.nowcoder.com/acm/contest/view-submission?submissionId=50913018
+
 */
 
 
@@ -526,6 +531,7 @@ int boundedKnapsackBinary (int n, int vals[], int weights[], int numbers[], int 
 }
 
 // EXTRA 多重背包计数(前缀和优化)
+// NOTE 多重背包计数二进制优化时不能只存背包大小的维度
 // https://www.luogu.com.cn/problem/P1077
 
 // 分组背包
@@ -579,6 +585,9 @@ void getWaysOfKLengthRoadInTree (int u, int p)
 // todo 题单  https://ac.nowcoder.com/acm/problem/collection/808
 //      题单  https://ac.nowcoder.com/acm/problem/collection/810
 // 
+// 一些题目
+// 将16位状态拆分成 8 + 8 的状态，高位和低位分别存储，把复杂度从 2^16 降低到 2^8
+// Freezing https://ac.nowcoder.com/acm/contest/11230/F
 
 /* 概率dp/期望dp
    https://oi-wiki.org/dp/probability/
@@ -594,6 +603,7 @@ void getWaysOfKLengthRoadInTree (int u, int p)
 // 重复操作型，会产生无限递归型公式，化简可以形成dp公式
 // 收集邮票  https://www.luogu.com.cn/problem/P4550
 // 2022昆明B(状压+期望dp):  https://ac.nowcoder.com/acm/contest/32708/B
+// 洛谷 P1654 OSU! https://www.luogu.com.cn/problem/P1654
 
 
 int main()

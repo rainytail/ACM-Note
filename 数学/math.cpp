@@ -112,6 +112,7 @@ void getEulers (int n)
 // 欧拉定理  x^phi(m) = 1 (mod m)
 // 注意这个 phi(m) 不一定是余数为 1 的最小数字 应该是 phi(m) 的因数
 // 例题  https://www.luogu.com.cn/problem/P4861
+// 最小可见点  https://www.acwing.com/problem/content/203/
 
 /* 欧拉函数性质
 https://zhuanlan.zhihu.com/p/77880887
@@ -300,9 +301,10 @@ void getPreviousArgment (int dat, int d, int n)
 // https://oi-wiki.org/math/combinatorics/inclusion-exclusion-principle/
 // 如果题目有较多限制，可以先不考虑这些限制得到解，再容斥减去不符合限制的解
 // Devu和鲜花  https://www.acwing.com/problem/content/description/216/
+// 硬币购物 与上题相似  https://www.luogu.com.cn/problem/P1450
 // 一些题目
-// dfs容斥
-// 幸运数字 https://www.luogu.com.cn/problem/P2567
+// dfs容斥 幸运数字  https://www.luogu.com.cn/problem/P2567
+// 转换 Max Min  https://atcoder.jp/contests/abc247/tasks/abc247_e
 ll InclusionExclusion (int n, int a[])
 {
     ll ans = 0;

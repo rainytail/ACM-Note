@@ -73,6 +73,8 @@ bitset 用法：bitset一个模板类，相当于若干个位合在一起，存�
 bitset 可以直接输入，如 cin >> bit
 */
 
+// bitset + dp: 我是仙人掌  https://www.luogu.com.cn/problem/P6328
+
 /*
 c++内置函数
 参考  https://blog.csdn.net/jasonchen_gbd/article/details/44948523

@@ -1,3 +1,9 @@
+---
+tags:
+ - 算法
+ - 数据结构
+---
+
 # 树的启发式合并 (DSU On Tree)
 
 // https://oi-wiki.org/graph/dsu-on-tree/

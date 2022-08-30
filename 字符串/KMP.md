@@ -2,7 +2,7 @@
 
 ## 基础KMP
 
-详解(推荐)：https://www.acwing.com/solution/content/14666/
+详解(推荐)：https://zhuanlan.zhihu.com/p/545135464
 
 模板，求所有被匹配的位置：
 
@@ -10,29 +10,32 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int N = 100010, M = 1000010;
+const int N = 100010;
 int n, m;
-char p[N], s[M];
-int nxt[N]; // KMP最重要的部分，next数组
+string a, b;
+int nxt[N];
 
-int main ()
-{
-    scanf("%d%s%d%s", &n, p+1, &m, s+1);
-
-    // get next array
-    for (int i = 2, j = 0; i <= n; i ++ ) {
-        while(j && p[i] != p[j+1]) j = nxt[j];
-        if (p[i] == p[j+1]) ++ j;
-        nxt[i] = j;
+void get_next (string &s) {
+    nxt[1] = 0;
+    for (int i = 2; i < s.size(); i ++ ) {
+        nxt[i] = nxt[i-1];
+        while(nxt[i] && s[i] != s[nxt[i]+1])
+            nxt[i] = nxt[nxt[i]];
+        if (s[i] == s[nxt[i] + 1]) ++ nxt[i];
     }
+}
 
-    // match
-    for (int i = 1, j = 0; i <= m; i ++ ) {
-        while(j && s[i] != p[j+1]) j = nxt[j];
-        if (s[i] == p[j+1]) ++ j;
-        if (j == n) {
-            printf("%d ", i - n);
-            j = nxt[j];
+int main () {
+    cin >> n >> a >> m >> b; a = ' ' + a; b = ' ' + b;
+    get_next(a);
+    int i = 0;
+    for (int j = 1; j <= m; j ++ ) {
+        while(i && b[j] != a[i + 1]) i = nxt[i];
+        if (b[j] == a[i + 1]) ++ i;
+        if (i == n) {
+            // 匹配成功
+            cout << j - n << ' ';
+            i = nxt[i];
         }
     }
     return 0;
