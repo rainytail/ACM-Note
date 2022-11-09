@@ -41,14 +41,14 @@ void get_next (string &s) {
 
 ```c++
 int i = 0;
-    for (int j = 1; j <= m; j ++ ) {
-        while(i && s[j] != p[i + 1]) i = nxt[i];
-        if (s[j] == p[i + 1]) ++ i;
-        if (i == n) {
-            /* 匹配成功 */
-            i = nxt[i];
-        }
-    }
+for (int j = 1; j <= m; j ++ ) {
+	while(i && s[j] != p[i + 1]) i = nxt[i];
+	if (s[j] == p[i + 1]) ++ i;
+	if (i == n) {
+		/* 匹配成功 */
+		i = nxt[i];
+	}
+}
 ```
 
 ## border树
